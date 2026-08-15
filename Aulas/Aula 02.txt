@@ -1,0 +1,186 @@
+# PERÍCIA DE ESTRUTURA
+
+*O que o HTML diz sobre uma página quando ninguém está olhando a tela*
+
+**Programação Web — Aula 2 de 20 · HTML5 Semântico**
+
+## 🎯 MISSÃO
+
+Duas páginas podem ser idênticas na tela e completamente diferentes por dentro. Sua missão é abrir sites reais e descobrir o que a marcação revela — ou esconde — sobre a estrutura do conteúdo.
+
+- Escolha um site com bastante conteúdo (portal de notícias, blog, site institucional).
+- Use a aba Elements do DevTools (F12) e, quando indicado, o painel Accessibility.
+- Preencha à mão. Onde houver retângulo em branco, desenhe.
+- Não existe gabarito: o que vale é a justificativa que você escreve.
+
+**⏱️ Tempo:** 40 minutos     **👥 Formato:** individual, conferindo cada rodada com o colega ao lado
+
+> **Nome:** __Nicolas Martins Santos__________________   **Turma:** ____Programação web________________   **Data:** _14__ / __08 / __2026____
+
+## RODADA 01 — Div soup × semântico
+
+> `Arquivos pagina-a.html e pagina-b.html (ambiente virtual da disciplina)`
+
+Os dois trechos abaixo produzem exatamente a mesma tela. Um deles não diz nada sobre o que é cada parte. Para cada div numerada, escreva o elemento semântico que a substituiria.
+
+```text
+<!-- PAGINA A -->                     <!-- PAGINA B -->
+<div class="topo">      (1) ______   <header>
+  <div class="menu">    (2) ______     <nav>
+<div class="miolo">     (3) ______   <main>
+  <div class="post">    (4) ______     <article>
+  <div class="lateral"> (5) ______     <aside>
+<div class="rodape">    (6) ______   <footer>
+```
+
+**Sua análise:**
+
+1. As duas páginas renderizam igual. O que exatamente a página B tem que a A não tem?
+
+
+A página B oferece uma acessibilidade melhorada , SEO, Manutenibilidade de código, já a pagina A oferece apenas divisões genéricas.
+
+
+
+
+
+
+2. Escolha UMA das div acima e explique como você decidiu qual elemento a substitui.
+
+<div class = "rodape"> ---> <footer>
+a palavra rodape descreve a seção final ou de encerramento  de um documento.
+
+
+3. Sobrou algum caso em que o div é a escolha certa? Quando?
+
+
+sim a tag <div> deve ser utilizada exclusivamente para fins de layout, estilização CSS ou agrupamentos genéricos.
+## RODADA 02 — O mapa da página
+
+> `Site real → DevTools → aba Elements → colapsar os nós e olhar só o primeiro nível dentro de <body>`
+
+Desenhe no retângulo abaixo onde ficam as grandes regiões da página que você escolheu, escrevendo o nome do elemento que a marca (ou "div" se não houver elemento semântico):
+
+```text
++--------------------------------------------------+
+|                                                  |
+|                                                  |
+|                                                  |
+|                                                  |
+|                                                  |
+|                                                  |
++--------------------------------------------------+
+  site investigado: ______________________________
+```
+
+**Sua análise:**
+
+1. Quantas regiões você conseguiu identificar sem abrir os nós filhos?
+ Foram identificados 12 a 13 filhos de primeiro nivel dentro da tag
+
+
+
+2. O site usa elementos semânticos ou div com class? Anote dois nomes de class que você viu.
+ O site massivo de uso deiv com class
+ td-menu-background
+ td-search-background
+
+
+3. Existe mais de um `<main>` na página? Deveria existir?
+ Não existe nenhum elemento main visivel.
+  Não deveria existir mais de um , pois deve as especificações do HTML5 determina ter apenas um unico elemento visicel por página 
+
+
+## RODADA 03 — A hierarquia dos títulos
+
+> `Ainda no mesmo site: no Console, digitar $$('h1,h2,h3,h4').map(h => h.tagName + ' ' + h.innerText.slice(0,40))`
+
+Esse comando lista os títulos na ordem em que aparecem no código. Anote os primeiros e procure o problema:
+
+```text
+ordem   tag    texto do titulo
+-----   ----   ------------------------------------
+  1     ____   ____________________________________
+  2     ____   ____________________________________
+  3     ____   ____________________________________
+  4     ____   ____________________________________
+  5     ____   ____________________________________
+```
+
+**Sua análise:**
+
+1. Quantos h1 a página tem? Se tem mais de um, qual seria o problema disso?
+
+deve ter apenas h1 , caso tenha mais de um há problemas múltiplicos que prejudicam o SEO  e confudem leitores de tela
+
+
+2. Algum nível foi pulado (um h2 seguido direto de um h4)? Anote onde.
+
+Sim , o nível 3 foi pulado na estrutura do documento  logo após  o titulo principal de nível 1
+
+3. Lendo só os títulos, você entende de que a página trata? Se não, o que está faltando?
+
+não da para entender totalmente o contexto da página  está faltando o assunto , clareza nos tópicos
+
+
+
+## RODADA 04 — O alt que ninguém lê (mas alguém ouve)
+
+> `No Console: $$('img').slice(0,3).map(i => i.alt || '(SEM ALT)')`
+
+Um leitor de tela lê o alt em voz alta no lugar da imagem. Anote os três primeiros e classifique cada um:
+
+```text
+img 1  alt = _________logo______________________________
+       ( ) descritivo  ( x) inutil  ( ) ausente  ( ) vazio proposital
+
+img 2  alt = _______logo________________________________
+       ( ) descritivo  (x ) inutil  ( ) ausente  ( ) vazio proposital
+
+img 3  alt = __________logo_____________________________
+       ( ) descritivo  (x ) inutil  ( ) ausente  ( ) vazio proposital
+```
+
+**Sua análise:**
+
+1. Algum alt era só o nome do arquivo ("banner-2024-final.jpg")? Por que isso é inútil?
+ não têm nenhum fundamento
+
+2. Feche os olhos e imagine ouvir a página. O que você perderia com esses alt?
+não alteraria nada , pois não é descritivo 
+
+3. Reescreva o pior dos três de forma que descreva a imagem em menos de 12 palavras.
+
+logo referencial do nome do site 
+
+## RODADA 05 — O link fora de contexto
+
+> `No Console: $$('a').slice(0,10).map(a => a.innerText.trim()).filter(t => t)`
+
+Leitores de tela permitem navegar por uma lista só de links, sem o texto ao redor. Anote 3 textos de link e teste se sobrevivem sozinhos:
+
+```text
+link 1: "___________________"  faz sentido sozinho? (x )sim ( )nao
+link 2: "__________________"  faz sentido sozinho? ( x)sim ( )nao
+link 3: "__________________"  faz sentido sozinho? ( x)sim ( )nao
+```
+
+**Sua análise:**
+
+1. Você encontrou algum "clique aqui", "saiba mais" ou "leia"? Para onde ele levava?
+
+ sim , encontrei e leva a outros sites realcionados aos links 
+2. Reescreva um desses textos para que ele diga o destino sem depender da frase ao redor.
+Dísponivel  poderia ser  reescrito como "Ver pets dísponiveis para a adoção"
+
+3. Algum link abria em nova aba? Como você descobriu isso olhando o código?
+
+
+ sim , havia um link que abria uma nova aba , eu descobri ao passar ao mouse em e ver que era clicavel 
+## 🏆 DESAFIO BÔNUS
+
+Terminou antes do tempo? Escolha um destes:
+
+- Rode a auditoria Accessibility do Lighthouse (DevTools → Lighthouse) no site que você investigou. Qual foi a nota e qual o primeiro problema apontado?
+- Procure na página um texto que PARECE título (grande e em negrito) mas não é um h. Como você confirmou?
+- Encontre um site que use `<table>` para fazer layout em vez de dados tabulares. Por que isso é um problema de acessibilidade?
