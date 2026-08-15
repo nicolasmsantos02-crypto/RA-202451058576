@@ -165,6 +165,7 @@ link 2: "__________________"  faz sentido sozinho? ( x)sim ( )nao
 link 3: "__________________"  faz sentido sozinho? ( x)sim ( )nao
 ```
 
+
 **Sua análise:**
 
 1. Você encontrou algum "clique aqui", "saiba mais" ou "leia"? Para onde ele levava?
