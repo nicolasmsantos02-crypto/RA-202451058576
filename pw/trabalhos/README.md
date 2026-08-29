@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto de Programação Web</title>
+</head>
+
+<body>
+
+    <h1>Cervejaria Salto de Fé</h1>
+
+    <p>
+        Aqui, tradição, sabor e paixão pela cerveja se encontram.
+        Conheça um pouco da fascinante história da cerveja, desde suas
+        origens até os dias de hoje, e descubra como essa bebida
+        conquistou gerações ao redor do mundo.
+
+        E para tornar essa experiência ainda mais especial, convidamos
+        você a conhecer nosso catálogo de produtos e explorar as opções
+        que preparamos para você.
+
+        Salto de Fé — uma história para conhecer, uma cerveja para apreciar.
+    </p>
+
+    <main>
+        <section>
+            <h2>Origem da cerveja</h2>
+
+            <p>
+                Historiadores mencionam o surgimento acidental da cerveja
+                em diferentes partes do mundo. A bebida surgiu quando grãos
+                de cevada ou trigo armazenados fermentaram de forma natural,
+                com leveduras do ar após entrarem em contato com a água.
+            </p>
+        </section>
+    </main>
+     
+    
+    <h3> O que diferencia um tipo de cerveja para outro </h3>
+
+    <p>
+    As cervejas diferem principalmente devido ao tipo de levedura,
+    à temperatura de fermentação e aos ingredientes da receita.
+    Embora levem água, malte, lúpulo e levedura em sua base,
+    esses fatores criam grandes famílias e estilos únicos.
+</p>
+
+<p>Sendo essas famílias:</p>
+
+<ul>
+    <li>
+        <strong>Lager:</strong>
+        Fermentam em temperaturas baixas (entre 5ºC e 14ºC), com
+        leveduras que atuam na parte inferior do tanque. Resultam em
+        bebidas mais límpidas, suaves e refrescantes. O estilo Pilsen
+        pertence a essa família.
+    </li>
+
+    <li>
+        <strong>Ale:</strong>
+        Fermentam em temperaturas mais altas (entre 15ºC e 24ºC), com
+        leveduras que atuam na parte superior. Produzem sabores mais
+        complexos e aromas frutados ou condimentados. Estilos como IPA
+        e Stout entram aqui.
+    </li>
+
+    <li>
+        <strong>Lambic:</strong>
+        Usam fermentação espontânea em contato direto com o ar e
+        leveduras nativas do ambiente, sem adição de levedura cultivada.
+    </li>
+</ul>
+
+
+
+
+</body>
+</html>
 
