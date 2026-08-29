@@ -1,0 +1,29 @@
+# Proposta de Projeto — Programação Web 2026.2
+
+- **Aluno:** Nicolas Martins Santos  202451058576 · **Curso/Turma: Programação Web
+- **Repositório:  https://github.com/nicolasmsantos02-crypto/RA-202451058576  URL
+
+## 1. Tema e problema
+Será desenvolvido um site de uma cervejaria , no qual irá mostrar informções sobre as cervejas 
+
+## 2. Público-alvo
+Consumidores de cerveja , que busca informações a respeito do tipo que consome 
+
+## 3. Coleção de itens
+Qual é a coleção (mín. 8 itens) e quais atributos cada item tem.
+Exemplo de um item preenchido.
+
+## 4. Telas previstas
+Lista das telas (mín. 3): o que cada uma mostra.
+
+## 5. Formulário
+Qual formulário existe, quais campos e que validações terá.
+
+## 6. Filtro/busca
+Por qual critério o usuário filtra ou busca a coleção.
+
+## 7. Origem dos dados na Fase 2
+API pública (qual, com link), API própria ou mock local (json-server / JSON estático).
+
+## 8. Diferencial pretendido
+O que este projeto terá além do piso obrigatório.
