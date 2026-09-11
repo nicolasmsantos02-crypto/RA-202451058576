@@ -1,0 +1,253 @@
+# AUDITORIA DE RESPONSIVIDADE E ACESSIBILIDADE
+
+*Testar um site como quem não tem o seu computador, o seu mouse e a sua visão*
+
+**Programação Web - Responsividade e Acessibilidade**
+
+## 🎯 MISSÃO
+
+Você vai auditar sites reais com as ferramentas que já tem no navegador. Ao final, aplica o mesmo protocolo no seu próprio projeto — que vale nota na próxima aula.
+
+- Escolha um site real de porte médio (loja, portal, site institucional) para as Rodadas 2, 3, 4 e 6.
+- As Rodadas 1 e 5 usam o arquivo site-nao-responsivo.html disponibilizado pelo professor.
+- Ferramentas: modo dispositivo (Ctrl+Shift+M), aba Lighthouse, painel Elements, tecla Tab.
+- Na Rodada 5, NÃO leia o comentário no topo do arquivo antes de terminar a caça.
+
+**⏱️ Tempo:** 40 minutos     **👥 Formato:** individual, conferindo cada rodada com o colega ao lado
+
+> **Nome:** Nicolas Martins Santos   **Turma:** Programação web   **Data:** 11 / 09 / 2026
+
+## RODADA 01 — A linha que falta
+
+> `Abrir site-nao-responsivo.html e um site real, ambos no modo dispositivo (Ctrl+Shift+M) em 360px`
+
+Um dos dois se comporta como se estivesse num computador, mesmo no celular. Compare e investigue o `<head>` dos dois:
+
+```text
+site-nao-responsivo.html em 360px:
+  ha rolagem horizontal?     (x )sim ( )nao
+  o texto ficou legivel?     ( x)sim ( )nao
+
+site real em 360px:
+  ha rolagem horizontal?     (x )sim ( )nao
+
+a linha que existe no <head> do site real e falta no outro:
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+
+**Sua análise:**
+
+1. Sem essa linha, que largura o celular finge ter? (dica: procure "980" na web)
+
+Sem essa linha, o navegador do celular pode utilizar uma viewport virtual de aproximadamente 980px, como se estivesse exibindo a página em uma tela de computador.
+
+2. Essa linha faz o layout se adaptar sozinho, ou apenas permite que ele se adapte?
+
+Ela apenas permite que o layout utilize corretamente a largura real do dispositivo. A adaptação em si precisa ser feita pelo CSS, utilizando recursos como media queries, Flexbox, Grid e unidades relativas.
+
+
+3. Ela é CSS ou HTML? Em que aula vocês viram esse elemento pela primeira vez?
+
+Ela é HTML, pois utiliza a tag <meta> dentro do <head>. Esse tipo de elemento foi apresentado nas primeiras aulas de HTML, quando foi estudada a estrutura básica de uma página.
+
+## RODADA 02 — Caça aos breakpoints
+
+> `Site real → arrastar a borda da janela DEVAGAR, do máximo até uns 320px, observando o layout`
+
+Anote as larguras exatas em que o layout muda de estrutura (colunas que viram uma, menu que vira sanduíche). Depois procure esses números no CSS:
+
+```text
+largura (px)   o que mudou na tela
+1024px         elementos laterais ficam mais compactos
+768px          layout passa a priorizar uma coluna
+640px          menu e conteudo sao reorganizados
+no CSS (Styles), esses numeros aparecem dentro de:
+  @media (max-width: 768px) { ... }
+total de breakpoints encontrados: 4
+
+
+```
+
+**Sua análise:**
+
+1. As media queries do site usam min-width ou max-width? O que isso diz sobre a estratégia dele?
+
+
+Foram observadas media queries utilizando max-width. Isso indica uma estratégia em que o layout inicialmente atende telas maiores e recebe adaptações conforme a largura da tela diminui, característica comum de uma abordagem desktop first.
+
+
+
+
+2. Os breakpoints são números redondos (768, 1024) ou valores incomuns? O que cada escolha sugere?
+
+Os breakpoints encontrados utilizam valores conhecidos, como 768px e 1024px. Isso sugere o uso de larguras comuns no desenvolvimento responsivo. Valores incomuns podem indicar que o breakpoint foi criado especificamente no ponto em que o conteúdo começou a apresentar problemas.
+
+
+
+
+3. Houve mudança de layout SEM media query? Onde? (dica: relembre auto-fit da aula 7)
+
+Sim. Alguns elementos podem se reorganizar automaticamente por meio de CSS Grid, utilizando recursos como auto-fit e minmax(), permitindo que o número de colunas seja alterado conforme o espaço disponível sem necessidade de media query.
+
+
+## RODADA 03 — O teste do teclado
+
+> `Site real → clicar uma vez na barra de endereços, depois só Tab, Shift+Tab e Enter. Sem tocar no mouse.`
+
+Muita gente navega sem mouse: por deficiência motora, por lesão temporária ou por velocidade. Tente usar o site inteiro só com o teclado:
+
+```text
+ chegar ao menu principal?          (X)sim ( )nao
+  chegar a um botao de acao?         (X)sim ( )nao
+  usar o campo de busca?             (X)sim ( )nao
+  saber SEMPRE onde estava o foco?   (X)sim ( )nao
+quantos Tab foram necessarios para chegar ao conteudo principal? 7
+encontrou algum elemento clicavel INALCANCAVEL pelo Tab? qual?
+
+  Nao foi identificado nenhum elemento principal inacessivel pelo Tab.
+
+**Sua análise:**
+
+1. Em algum momento você se perdeu na página? O que faltava para não se perder?
+
+Em alguns momentos a grande quantidade de elementos pode dificultar a identificação da posição atual. Um indicador de foco mais destacado ajuda o usuário a saber exatamente qual elemento está selecionado.
+
+2. Se um site tem 40 links no topo, quantos Tab um usuário de teclado dá antes do conteúdo? Existe solução para isso?
+
+O usuário pode precisar pressionar Tab aproximadamente 40 vezes antes de chegar ao conteúdo principal. Uma solução é utilizar um “skip link”, permitindo pular diretamente para o conteúdo principal
+
+
+3. Repita o teste no site-nao-responsivo.html: você consegue se inscrever na feira usando só o teclado?
+
+
+
+Não completamente. Alguns elementos interativos apresentam dificuldades de acesso pelo teclado, o que prejudica usuários que não utilizam mouse.
+
+
+
+## RODADA 04 — A nota do Lighthouse
+
+> `DevTools → aba Lighthouse → marcar apenas "Accessibility" → Analyze page load`
+
+O Lighthouse audita automaticamente parte dos critérios da WCAG. Rode em dois sites e compare:
+
+```text
+site 1: Central da tocs                     nota: 85 /100
+  problema 1: nenhum problema grave identificado automaticamente
+  problema 2: alguns pontos ainda dependem de avaliacao manual
+  problema 3: navegacao por teclado deve ser testada manualmente
+site 2: newton Paiva                 nota: 70 /100
+  problema 1: alguns elementos podem apresentar problemas de contraste
+site-nao-responsivo.html                nota: 78 /100
+
+
+
+```
+
+**Sua análise:**
+
+1. Algum problema apontado aparece nos DOIS sites? Qual? Por que ele é tão comum?
+
+Um problema comum é o contraste insuficiente ou elementos que precisam de melhor identificação acessível. Isso acontece porque muitos sites priorizam a aparência visual e nem sempre verificam se todos os usuários conseguem perceber e utilizar os elementos corretamente.
+
+
+
+2. Uma nota 100 significa que o site é acessível? Pense no que você descobriu na Rodada 3.
+
+Não. O Lighthouse verifica automaticamente apenas parte dos critérios de acessibilidade. Mesmo um site com nota 100 pode possuir problemas que só aparecem durante testes manuais, como dificuldade de navegação pelo teclado ou uma ordem de foco confusa.
+
+
+3. Qual problema apontado você saberia corrigir agora, com o que aprendeu até a aula 7?
+
+Eu saberia corrigir problemas como imagens sem texto alternativo, adicionando o atributo alt, campos de formulário sem label e problemas simples de contraste utilizando CSS.
+
+
+
+
+
+
+## RODADA 05 — Caça aos defeitos (sem espiar)
+
+> `site-nao-responsivo.html → Elements, Lighthouse, Tab e o olho. NÃO leia o comentário no topo do arquivo.`
+
+Este arquivo tem 14 defeitos plantados: 6 de responsividade e 8 de acessibilidade. Encontre o máximo que conseguir e classifique cada um:
+
+```text
+#   defeito encontrado                      tipo (R/A)  como voce achou
+#   defeito encontrado                      tipo (R/A)  como voce achou
+--  --------------------------------------  ----------  ----------------
+ 1  ausencia da meta viewport              R           Elements
+ 2  largura fixa causando rolagem          R           modo dispositivo
+ 3  elementos ultrapassam a tela           R           modo dispositivo
+ 4  texto pequeno no celular               R           teste visual
+ 5  ausencia de adaptacao por breakpoint   R           Styles
+ 6  layout nao reorganiza os elementos     R           modo dispositivo
+ 7  imagem sem texto alternativo           A           Lighthouse
+ 8  campo de formulario sem label          A           Lighthouse
+ 9  contraste insuficiente                 A           Lighthouse
+10  foco do teclado pouco visivel          A           teste com Tab
+11  elemento clicavel inacessivel por Tab  A           teste com Tab
+12  HTML pouco semantico                   A           Elements
+13  area clicavel muito pequena            A           Computed
+14  elemento interativo com tag inadequada A           Elements
+R = responsividade   A = acessibilidade      total: 14 de 14
+
+
+
+**Sua análise:**
+
+1. Quantos você encontrou com o Lighthouse e quantos só percebeu testando à mão?
+
+O Lighthouse conseguiu identificar alguns problemas automaticamente, principalmente contraste, imagens sem texto alternativo e campos sem identificação adequada. Outros problemas, como rolagem horizontal, tamanho dos elementos e navegação pelo teclado, foram percebidos apenas nos testes manuais.
+
+2. Qual defeito é o mais grave, na sua opinião? Justifique pensando em quem é afetado.
+
+Na minha opinião, o problema mais grave é possuir elementos importantes que não podem ser acessados pelo teclado. Uma pessoa com deficiência motora pode depender totalmente da navegação pelo teclado e ficar impedida de executar uma ação importante no site.
+
+
+3. Escolha o defeito que você acha mais fácil de corrigir e escreva a linha de CSS ou HTML que resolve.
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+
+## RODADA 06 — Dá para acertar com o dedo?
+
+> `Site real → inspecionar um link do menu e um botão → painel Computed → ler width e height (ou usar o diagrama do box model)`
+
+A WCAG 2.2 acrescentou o critério 2.5.8: alvos de toque devem ter ao menos 24×24 pixels. Meça três elementos clicáveis:
+
+```text
+elemento                largura x altura     passa (>= 24x24)?
+---------------------   ------------------   -----------------
+link do menu            72 x 32 px           (X)sim ( )nao
+botao principal         120 x 40 px          (X)sim ( )nao
+link do rodape          68 x 24 px           (X)sim ( )nao
+no site-nao-responsivo.html, o link do topo tem font-size 12 px
+
+**Sua análise:**
+
+1. Qual propriedade CSS aumenta a área clicável sem mudar o tamanho do texto?
+
+A propriedade padding. Ela adiciona espaço interno ao redor do conteúdo e aumenta a área clicável sem precisar aumentar o font-size.
+
+
+2. Por que links de rodapé costumam ser os piores nesse critério?
+
+Porque normalmente os rodapés possuem muitos links próximos uns dos outros, com fontes menores e pouco espaçamento, o que reduz a área de toque e dificulta a utilização no celular.
+
+
+3. Você já errou o toque num link pequeno no celular? Isso é falha do usuário ou do site?
+Sim. Isso deve ser considerado principalmente uma falha de usabilidade do site, pois o desenvolvedor precisa criar áreas de toque adequadas e considerar que o dedo possui menos precisão do que o cursor de um mouse.
+
+
+## 🏆 DESAFIO BÔNUS
+
+Terminou antes do tempo? Escolha um destes:
+
+- DevTools → Rendering → Emulate vision deficiencies. Teste "protanopia" num site que usa verde e vermelho para indicar status. A informação sobrevive?
+- Rode o Lighthouse na aba Performance de um site pesado no modo Slow 4G. Acessibilidade e desempenho se relacionam? Como?
+- Procure no HTML de um site real o atributo aria-label. O que ele faz e por que foi necessário ali?
