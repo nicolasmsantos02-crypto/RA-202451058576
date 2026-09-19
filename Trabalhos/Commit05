@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cervejaria Salto de Fé</title>
+
+    <style>
+        /* Seu CSS */
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Cervejaria Salto de Fé</h1>
+
+        <nav aria-label="Navegação principal">
+            <ul>
+                <li>
+                    <a href="Tipos-de-Cerveja.html">
+                        Tipos de Cerveja
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Sobre-nos.html">
+                        Sobre Nós
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Contato.html">
+                        Contato
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section aria-labelledby="introducao">
+            <h2 id="introducao">Bem-vindo à Cervejaria Salto de Fé</h2>
+
+            <p>
+                Aqui, tradição, sabor e paixão pela cerveja se encontram.
+                Conheça um pouco da fascinante história da cerveja, desde suas
+                origens até os dias de hoje, e descubra como essa bebida
+                conquistou gerações ao redor do mundo.
+            </p>
+
+            <p>
+                E para tornar essa experiência ainda mais especial, convidamos
+                você a conhecer nosso catálogo de produtos e explorar as opções
+                que preparamos para você.
+            </p>
+
+            <p>
+                Salto de Fé — uma história para conhecer, uma cerveja para apreciar.
+            </p>
+        </section>
+
+        <section aria-labelledby="origem">
+            <h2 id="origem">Origem da cerveja</h2>
+
+            <p>
+                Historiadores mencionam o surgimento acidental da cerveja
+                em diferentes partes do mundo. A bebida surgiu quando grãos
+                de cevada ou trigo armazenados fermentaram de forma natural,
+                com leveduras do ar após entrarem em contato com a água.
+            </p>
+        </section>
+
+        <section aria-labelledby="diferencas">
+            <h2 id="diferencas">
+                O que diferencia um tipo de cerveja de outro?
+            </h2>
+
+            <p>
+                As cervejas diferem principalmente devido ao tipo de levedura,
+                à temperatura de fermentação e aos ingredientes da receita.
+                Embora levem água, malte, lúpulo e levedura em sua base,
+                esses fatores criam grandes famílias e estilos únicos.
+            </p>
+
+            <h3>Principais famílias de cerveja</h3>
+
+            <ul>
+                <li>
+                    <strong>Lager:</strong>
+                    Fermentam em temperaturas baixas, com leveduras que
+                    atuam na parte inferior do tanque. Resultam em bebidas
+                    mais límpidas, suaves e refrescantes.
+                </li>
+
+                <li>
+                    <strong>Ale:</strong>
+                    Fermentam em temperaturas mais altas, com leveduras
+                    que atuam na parte superior. Produzem sabores mais
+                    complexos e aromas frutados ou condimentados.
+                </li>
+
+                <li>
+                    <strong>Lambic:</strong>
+                    Usam fermentação espontânea, com microrganismos
+                    presentes no ambiente, sem adição de levedura cultivada.
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+</body>
+</html>
