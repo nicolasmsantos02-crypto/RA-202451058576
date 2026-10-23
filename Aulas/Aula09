@@ -1,0 +1,503 @@
+ROTEIRO PRÁTICO: LISTAS, ESTADO E FORMULÁRIOS
+────────────────────────────────
+Parte 1 no laboratório, Parte 2 no seu projeto. Só avance quando o ✅ do passo estiver verdadeiro.
+Programação Web — Aula 16 de 20 · React II — Listas, Estado e Formulários
+🎯 MISSÃO
+Hoje a tela passa a reagir: listas geradas a partir dos dados, botões que mudam números e uma busca que filtra enquanto você digita. Primeiro você faz tudo num catálogo de filmes de exemplo; depois aplica no seu projeto e faz o primeiro commit da Fase 2.
+•	Parte 1 (Passos 1 a 5): no laboratório meu-primeiro-react, da aula 15. Não use o projeto do semestre aqui.
+•	Parte 2 (Passos 6 a 11): no SEU repositório, na pasta pw/trabalhos/fase-2. Termina com commit e push.
+•	Para casa (Passo 12), em OUTRO dia: o formulário do seu projeto. Commits em dias diferentes contam para a regra D3 (≥ 10 commits em ≥ 6 dias).
+•	Deixe o Console aberto (F12) o tempo todo: vários passos mandam ler um aviso que só aparece lá.
+⏱️ Tempo: Parte 1: 40 min · Parte 2: 75 min · Para casa: ~40 min     👥 Formato: individual, conferindo cada passo com o colega ao lado
+Nome:	Turma:                    Data:      /      /          
+
+PASSO 01     Os dados do catálogo
+meu-primeiro-react → crie a pasta src/dados e o arquivo filmes.js
+Ligue o laboratório (npm run dev dentro de meu-primeiro-react). Crie src/dados/filmes.js com os 8 filmes:
+ 1  const filmes = [
+ 2    { id: 1, titulo: "Central do Brasil", ano: 1998, genero: "Drama", duracao: 113 },
+ 3    { id: 2, titulo: "Cidade de Deus", ano: 2002, genero: "Drama", duracao: 130 },
+ 4    { id: 3, titulo: "O Auto da Compadecida", ano: 2000, genero: "Comédia", duracao: 104 },
+ 5    { id: 4, titulo: "Divertida Mente", ano: 2015, genero: "Animação", duracao: 95 },
+ 6    { id: 5, titulo: "Interestelar", ano: 2014, genero: "Ficção científica", duracao: 169 },
+ 7    { id: 6, titulo: "Toy Story", ano: 1995, genero: "Animação", duracao: 81 },
+ 8    { id: 7, titulo: "Bacurau", ano: 2019, genero: "Suspense", duracao: 131 },
+ 9    { id: 8, titulo: "Matrix", ano: 1999, genero: "Ficção científica", duracao: 136 },
+10  ];
+11  
+12  export default filmes;
+
+Agora apague o conteúdo do src/App.jsx e escreva:
+ 1  import filmes from "./dados/filmes";
+ 2  
+ 3  function App() {
+ 4    return (
+ 5      <>
+ 6        <h1 className="titulo">Catálogo de filmes</h1>
+ 7        <p>Temos {filmes.length} filmes.</p>
+ 8      </>
+ 9    );
+10  }
+11  
+12  export default App;
+
+✅ Deu certo se:
+•	a tela mostra o título e a frase Temos 8 filmes.
+💡 Cada filme é um objeto com id, titulo, ano, genero e duracao. O id é diferente em cada um — ele vai ser importante no passo 2.
+
+PASSO 02     Listas com map (e o aviso da key)
+src/App.jsx → mostre um título por filme
+O map passa por cada item do array e devolve um pedaço de tela para cada um. Acrescente, abaixo do parágrafo:
+ 1        <ul>
+ 2          {filmes.map((filme) => (
+ 3            <li>{filme.titulo}</li>
+ 4          ))}
+ 5        </ul>
+
+Salve. Os 8 títulos aparecem — mas abra o Console (F12). Tem um aviso vermelho que começa com Each child in a list should have a unique "key" prop. É de propósito: leia.
+A regra: cada item de uma lista precisa de uma key única, para o React saber quem é quem. Use o id:
+ 1            <li key={filme.id}>{filme.titulo}</li>
+
+✅ Deu certo se:
+•	aparecem os 8 títulos;
+•	depois de pôr a key, o aviso sumiu do Console (recarregue a página com F5 para conferir).
+
+PASSO 03     Um cartão por filme
+src/components/CartaoFilme.jsx → componente que recebe um filme
+Crie src/components/CartaoFilme.jsx. Ele recebe o filme inteiro numa prop chamada filme:
+ 1  function CartaoFilme({ filme }) {
+ 2    return (
+ 3      <article className="cartao">
+ 4        <h2>{filme.titulo}</h2>
+ 5        <p>{filme.ano} · {filme.genero} · {filme.duracao} min</p>
+ 6      </article>
+ 7    );
+ 8  }
+ 9  
+10  export default CartaoFilme;
+
+No App.jsx, importe o componente no topo e troque a <ul> inteira pela <div> abaixo:
+ 1  import CartaoFilme from "./components/CartaoFilme";
+ 2  
+ 3        <div className="lista">
+ 4          {filmes.map((filme) => (
+ 5            <CartaoFilme key={filme.id} filme={filme} />
+ 6          ))}
+ 7        </div>
+
+No src/index.css, acrescente:
+ 1  .lista {
+ 2    display: flex;
+ 3    flex-wrap: wrap;
+ 4    gap: 12px;
+ 5  }
+ 6  
+ 7  .cartao {
+ 8    border: 1px solid #ccc;
+ 9    border-radius: 8px;
+10    padding: 12px;
+11    width: 220px;
+12  }
+
+✅ Deu certo se:
+•	aparecem 8 cartões lado a lado, cada um com título, ano, gênero e duração.
+💡 A key fica no componente que está DENTRO do map (o <CartaoFilme>), não dentro do arquivo CartaoFilme.jsx.
+
+PASSO 04     Curtir: o primeiro estado
+src/components/CartaoFilme.jsx → um botão que conta curtidas
+Primeiro, o jeito que NÃO funciona (é de propósito). Mude o CartaoFilme para:
+ 1  function CartaoFilme({ filme }) {
+ 2    let curtidas = 0;
+ 3  
+ 4    function curtir() {
+ 5      curtidas = curtidas + 1;
+ 6      console.log(filme.titulo, curtidas);
+ 7    }
+ 8  
+ 9    return (
+10      <article className="cartao">
+11        <h2>{filme.titulo}</h2>
+12        <p>{filme.ano} · {filme.genero} · {filme.duracao} min</p>
+13        <button onClick={curtir}>Curtir ({curtidas})</button>
+14      </article>
+15    );
+16  }
+17  
+18  export default CartaoFilme;
+
+Clique 5 vezes em Curtir e olhe o Console e a tela. Agora o jeito certo, com useState:
+ 1  import { useState } from "react";
+ 2  
+ 3  function CartaoFilme({ filme }) {
+ 4    const [curtidas, setCurtidas] = useState(0);
+ 5  
+ 6    return (
+ 7      <article className="cartao">
+ 8        <h2>{filme.titulo}</h2>
+ 9        <p>{filme.ano} · {filme.genero} · {filme.duracao} min</p>
+10        <button onClick={() => setCurtidas(curtidas + 1)}>
+11          Curtir ({curtidas})
+12        </button>
+13      </article>
+14    );
+15  }
+16  
+17  export default CartaoFilme;
+
+A regra: useState(0) devolve duas coisas: o valor atual (curtidas) e a função que muda o valor (setCurtidas). Chamar setCurtidas avisa o React, e ele desenha o cartão de novo.
+✅ Deu certo se:
+•	com useState, o número do botão sobe a cada clique.
+Teste e responda:
+Com o let: o Console mostrou 1, 2, 3, 4, 5? E a tela mostrou o quê?
+ 
+Sim, o Console mostrou os números de 1 a 5. Porém, na tela, o número de curtidas continuou em 0, porque o let não faz o React atualizar a tela automaticamente.
+ 
+Com o useState: curta Matrix 3 vezes e Toy Story 1 vez. Cada cartão tem o seu próprio número?
+ 
+Sim. O cartão de Matrix mostra 3 curtidas e o de Toy Story mostra 1 curtida. Cada cartão possui seu próprio estado independente.
+
+PASSO 05     Busca: input controlado e filtro
+src/App.jsx → um campo que filtra os cartões enquanto você digita
+Primeiro um erro de propósito. No App, importe o useState, crie o estado da busca e ligue SÓ o value no campo:
+ 1  import { useState } from "react";
+ 2  
+ 3    const [busca, setBusca] = useState("");
+ 4  
+ 5        <input placeholder="Buscar pelo título..." value={busca} />
+
+Tente digitar no campo. Não sai nada! No Console aparece um aviso que começa com You provided a value prop to a form field without an onChange handler. O campo mostra o estado, mas ninguém atualiza o estado.
+Agora o App.jsx completo, com o onChange, o filtro e a mensagem de lista vazia:
+ 1  import { useState } from "react";
+ 2  import filmes from "./dados/filmes";
+ 3  import CartaoFilme from "./components/CartaoFilme";
+ 4  
+ 5  function App() {
+ 6    const [busca, setBusca] = useState("");
+ 7  
+ 8    const filtrados = filmes.filter((f) =>
+ 9      f.titulo.toLowerCase().includes(busca.toLowerCase())
+10    );
+11  
+12    return (
+13      <>
+14        <h1 className="titulo">Catálogo de filmes</h1>
+15  
+16        <input
+17          placeholder="Buscar pelo título..."
+18          value={busca}
+19          onChange={(evento) => setBusca(evento.target.value)}
+20        />
+21        <p>{filtrados.length} de {filmes.length} filmes</p>
+22  
+23        {filtrados.length === 0 && <p>Nenhum filme encontrado.</p>}
+24  
+25        <div className="lista">
+26          {filtrados.map((filme) => (
+27            <CartaoFilme key={filme.id} filme={filme} />
+28          ))}
+29        </div>
+30      </>
+31    );
+32  }
+33  
+34  export default App;
+
+Repare: filtrados NÃO é estado. Ele é calculado a partir de busca toda vez que a tela é desenhada. O que dá para calcular não vai em useState.
+✅ Deu certo se:
+•	a busca filtra os cartões enquanto você digita;
+•	com uma busca sem resultado, aparece Nenhum filme encontrado.
+💡 && quer dizer "se a condição for verdadeira, mostre isto". Para mostrar uma coisa OU outra, use o ternário: {condicao ? <A /> : <B />}.
+Teste e responda:
+Digite "toy". Quantos filmes sobram? E com "TOY"? Por que deu igual? (dica: toLowerCase)
+ 
+Sobra 1 filme: Toy Story. Com "TOY", também sobra 1 filme, porque toLowerCase() transforma o texto em letras minúsculas antes de fazer a busca, tornando-a independente de maiúsculas e minúsculas.
+ 
+Digite "xyz". O que aparece? Qual linha do código decidiu isso?
+ 
+ Aparece a mensagem "Nenhum filme encontrado.", porque nenhum título contém "xyz". Isso é decidido pela linha:
+
+PASSO 06     Seu projeto: criar a Fase 2
+Terminal → na RAIZ do seu repositório do semestre
+Pare o laboratório (Ctrl + C no terminal do npm run dev). Abra no VSCode a pasta do SEU repositório e confira que está na raiz dele:
+ 1  git status
+
+Se ainda não existirem, crie a pasta pw e, dentro dela, a pasta trabalhos (botão Nova Pasta do VSCode). Depois:
+ 1  cd pw/trabalhos
+ 2  npm create vite@latest fase-2 -- --template react
+ 3  cd fase-2
+ 4  npm install
+ 5  npm run dev
+
+✅ Deu certo se:
+•	git status respondeu com On branch main (ou o nome do seu branch), e não com not a git repository;
+•	existe pw/trabalhos/fase-2 dentro do seu repositório;
+•	localhost:5173 mostra a página Get started do Vite.
+💡 A Fase 1 continua onde está. Você não apaga nada: a Fase 2 é uma pasta nova ao lado dela.
+
+PASSO 07     Limpar o template e proteger o node_modules
+pw/trabalhos/fase-2 → App.jsx, index.css, App.css e .gitignore
+Deixe o projeto limpo, como fizemos na aula 15:
+•	src/App.jsx: só um <h1> com o nome do seu projeto (e o export default App;);
+•	src/index.css: apague todo o conteúdo;
+•	src/App.css: apague o arquivo.
+Agora abra o arquivo .gitignore da pasta fase-2 e confira que ele tem a linha node_modules. Em um segundo terminal, na pasta fase-2:
+ 1  git status
+
+✅ Deu certo se:
+•	a tela mostra só o nome do seu projeto;
+•	o git status lista os arquivos da fase-2, mas NENHUM arquivo de dentro de node_modules.
+💡 node_modules versionado custa −10 % da nota da fase (penalidade P4 do projeto). O .gitignore do Vite já protege você — só não o apague.
+
+PASSO 08     Trazer o visual da Fase 1
+Fase 1 (CSS) → fase-2/src/index.css · imagens → fase-2/public
+Você não começa do zero: o design da Fase 1 vem junto.
+•	Copie do CSS da Fase 1 o bloco :root { ... } com as custom properties (cores, fontes, espaçamentos) e cole no topo do src/index.css.
+•	Copie também os estilos gerais: body, títulos, links, botões, cards.
+•	Copie as imagens da Fase 1 para a pasta public/ da fase-2. No JSX elas são usadas com caminho a partir da raiz: <img src="/foto.jpg" alt="..." />.
+No JSX, lembre: onde a Fase 1 tinha class=, agora é className=.
+✅ Deu certo se:
+•	o título da fase-2 já aparece com as cores e a fonte da sua Fase 1.
+
+PASSO 09     Os dados do SEU projeto
+fase-2/src/dados → um arquivo com a sua coleção
+Crie src/dados/itens.js com a coleção da sua proposta (produtos, vagas, eventos, receitas...). Pelo menos 8 itens, cada um com id e pelo menos 4 atributos. Exemplo de formato — troque pelos atributos da SUA coleção:
+ 1  const itens = [
+ 2    {
+ 3      id: 1,
+ 4      nome: "Nome do item",
+ 5      categoria: "Categoria",
+ 6      descricao: "Uma frase sobre o item.",
+ 7      imagem: "/item-1.jpg",
+ 8    },
+ 9    // ... mais 7 itens, no mínimo, com id 2, 3, 4...
+10  ];
+11  
+12  export default itens;
+
+Use os textos que você já escreveu nos cards da Fase 1: é só passar do HTML para objetos.
+✅ Deu certo se:
+•	o arquivo tem 8+ itens, todos com id diferente;
+•	no App, {itens.length} mostra o número certo na tela (lembre do import itens from "./dados/itens";).
+
+PASSO 10     Seus componentes: Cabecalho, Card, ListaCards e Rodape
+fase-2/src/components → um arquivo por componente
+Monte a tela com peças. O modelo abaixo usa nome, categoria, descricao e imagem: troque pelos atributos da sua coleção e pelo HTML dos seus cards da Fase 1.
+ 1  // src/components/Card.jsx
+ 2  function Card({ item }) {
+ 3    return (
+ 4      <article className="card">
+ 5        <img src={item.imagem} alt={item.nome} />
+ 6        <h2>{item.nome}</h2>
+ 7        <p>{item.categoria}</p>
+ 8        <p>{item.descricao}</p>
+ 9      </article>
+10    );
+11  }
+12  
+13  export default Card;
+
+ 1  // src/components/ListaCards.jsx
+ 2  import Card from "./Card";
+ 3  
+ 4  function ListaCards({ itens }) {
+ 5    return (
+ 6      <div className="lista">
+ 7        {itens.map((item) => (
+ 8          <Card key={item.id} item={item} />
+ 9        ))}
+10      </div>
+11    );
+12  }
+13  
+14  export default ListaCards;
+
+Crie também Cabecalho.jsx (o <header> com o nome do site e o menu da Fase 1) e Rodape.jsx (o <footer>). Depois, o App junta tudo:
+ 1  import itens from "./dados/itens";
+ 2  import Cabecalho from "./components/Cabecalho";
+ 3  import ListaCards from "./components/ListaCards";
+ 4  import Rodape from "./components/Rodape";
+ 5  
+ 6  function App() {
+ 7    return (
+ 8      <>
+ 9        <Cabecalho />
+10        <main>
+11          <ListaCards itens={itens} />
+12        </main>
+13        <Rodape />
+14      </>
+15    );
+16  }
+17  
+18  export default App;
+
+✅ Deu certo se:
+•	a tela mostra cabeçalho, todos os cards da sua coleção e rodapé, com o visual da Fase 1;
+•	o Console não mostra o aviso de key;
+•	você tem 4 componentes próprios em src/components (a Fase 2 pede no mínimo 5 — o 5º vem no Passo 12).
+
+PASSO 11     Filtro com estado, commit e push
+fase-2/src/App.jsx → busca do seu projeto · terminal → git
+Use o critério de filtro da sua proposta. Para buscar pelo nome, é igual ao passo 5:
+ 1  import { useState } from "react";
+ 2  // ... os outros imports do passo 10
+ 3  
+ 4  function App() {
+ 5    const [busca, setBusca] = useState("");
+ 6  
+ 7    const filtrados = itens.filter((item) =>
+ 8      item.nome.toLowerCase().includes(busca.toLowerCase())
+ 9    );
+10  
+11    return (
+12      <>
+13        <Cabecalho />
+14        <main>
+15          <label htmlFor="busca">Buscar</label>
+16          <input
+17            id="busca"
+18            value={busca}
+19            onChange={(evento) => setBusca(evento.target.value)}
+20          />
+21          {filtrados.length === 0 && <p>Nada encontrado.</p>}
+22          <ListaCards itens={filtrados} />
+23        </main>
+24        <Rodape />
+25      </>
+26    );
+27  }
+28  
+29  export default App;
+
+Filtro por categoria? Troque a condição por item.categoria === categoria, com um <select> controlado no lugar do input.
+Funcionou? Entregue o avanço da aula. Na pasta fase-2:
+ 1  git add .
+ 2  git commit -m "Fase 2: projeto React com lista de cards e busca"
+ 3  git push
+
+✅ Deu certo se:
+•	a busca filtra os seus cards e mostra a mensagem quando nada é encontrado;
+•	no site do GitHub, a pasta pw/trabalhos/fase-2 aparece no seu repositório e NÃO tem node_modules;
+•	a mensagem do commit diz o que mudou (nada de update ou aaa — penalidade P3).
+
+PASSO 12     Para casa (em outro dia): o formulário controlado
+laboratório → FormularioSugestao.jsx · depois, o formulário do seu projeto
+A Fase 2 exige um formulário controlado com 5+ campos e validação. Primeiro faça este no laboratório, em src/components/FormularioSugestao.jsx, e use <FormularioSugestao /> no fim do App (com o import no topo):
+ 1  import { useState } from "react";
+ 2  
+ 3  function FormularioSugestao() {
+ 4    const [dados, setDados] = useState({
+ 5      titulo: "",
+ 6      ano: "",
+ 7      genero: "",
+ 8      email: "",
+ 9      motivo: "",
+10    });
+11    const [erro, setErro] = useState("");
+12    const [enviado, setEnviado] = useState(false);
+13  
+14    function atualizar(evento) {
+15      const { name, value } = evento.target;
+16      setDados({ ...dados, [name]: value });
+17    }
+18  
+19    function enviar(evento) {
+20      evento.preventDefault();
+21  
+22      if (dados.titulo.trim() === "") {
+23        setErro("Informe o título do filme.");
+24        return;
+25      }
+26      if (Number(dados.ano) < 1900) {
+27        setErro("O ano precisa ser 1900 ou depois.");
+28        return;
+29      }
+30      if (!dados.email.includes("@")) {
+31        setErro("Digite um e-mail válido.");
+32        return;
+33      }
+34  
+35      setErro("");
+36      setEnviado(true);
+37      console.log("Sugestão enviada:", dados);
+38    }
+39  
+40    if (enviado) {
+41      return <p>Obrigado! Recebemos a sugestão de {dados.titulo}.</p>;
+42    }
+43  
+44    return (
+45      <form onSubmit={enviar}>
+46        <h2>Sugira um filme</h2>
+47  
+48        <label htmlFor="titulo">Título</label>
+49        <input id="titulo" name="titulo" value={dados.titulo} onChange={atualizar} />
+50  
+51        <label htmlFor="ano">Ano</label>
+52        <input id="ano" name="ano" type="number" value={dados.ano} onChange={atualizar} />
+53  
+54        <label htmlFor="genero">Gênero</label>
+55        <select id="genero" name="genero" value={dados.genero} onChange={atualizar}>
+56          <option value="">Escolha...</option>
+57          <option value="Drama">Drama</option>
+58          <option value="Comédia">Comédia</option>
+59          <option value="Animação">Animação</option>
+60        </select>
+61  
+62        <label htmlFor="email">Seu e-mail</label>
+63        <input id="email" name="email" type="email" value={dados.email} onChange={atualizar} />
+64  
+65        <label htmlFor="motivo">Por que você recomenda?</label>
+66        <textarea id="motivo" name="motivo" value={dados.motivo} onChange={atualizar} />
+67  
+68        {erro && <p className="erro">{erro}</p>}
+69  
+70        <button type="submit">Enviar sugestão</button>
+71      </form>
+72    );
+73  }
+74  
+75  export default FormularioSugestao;
+
+No src/index.css do laboratório, acrescente:
+ 1  form {
+ 2    display: flex;
+ 3    flex-direction: column;
+ 4    gap: 6px;
+ 5    max-width: 360px;
+ 6    margin-top: 32px;
+ 7  }
+ 8  
+ 9  .erro {
+10    color: #c0392b;
+11  }
+
+Como ele funciona, em 4 ideias:
+•	um estado só, em objeto, guarda todos os campos (dados);
+•	cada campo tem name igual à chave do objeto, e todos usam o mesmo onChange={atualizar};
+•	{ ...dados, [name]: value } copia o objeto e troca só o campo que mudou;
+•	preventDefault() impede a página de recarregar; a validação decide se mostra o erro ou envia.
+Agora crie o formulário do SEU projeto (o da proposta: cadastro, inscrição, contato...) no mesmo modelo, em fase-2/src/components/, com pelo menos 5 campos e 2 validações. Use os campos e os textos do formulário da Fase 1.
+Terminou? Commit e push, NUM DIA DIFERENTE do dia da aula:
+ 1  git add .
+ 2  git commit -m "Fase 2: formulário de cadastro controlado com validação"
+ 3  git push
+
+✅ Deu certo se:
+•	no laboratório, enviar com o título vazio mostra Informe o título do filme. e a página NÃO recarrega;
+•	o formulário do seu projeto tem 5+ campos, cada um com label e name, e mostra mensagem de erro;
+•	o commit está no GitHub, com data diferente do commit do Passo 11.
+💡 Commitar em vários dias não é burocracia: a Fase 2 zera com menos de 10 commits ou menos de 6 dias diferentes (regra D3). Cada aula + cada Para casa = 2 dias.
+
+🧯 DEU ERRADO? (sintoma → o que fazer)
+Antes de chamar o professor, procure o seu caso aqui:
+•	Each child in a list should have a unique key prop → falta key={item.id} no componente de dentro do map (passo 2).
+•	Cliquei e o número não muda → você está usando let em vez de useState, ou esqueceu de chamar o setCurtidas (passo 4).
+•	Too many re-renders, ou o clique acontece sozinho ao abrir a página → você escreveu onClick={curtir()}. Tire os parênteses: onClick={curtir}.
+•	Não consigo digitar no campo → tem value e falta onChange (passo 5).
+•	useState is not defined → faltou import { useState } from "react"; no topo do arquivo.
+•	Cannot read properties of undefined (reading 'titulo') → o componente não recebeu a prop. Confira <CartaoFilme filme={filme} />.
+•	A página recarrega quando envio o formulário → faltou evento.preventDefault() no começo da função do onSubmit.
+•	git status diz not a git repository → você não está dentro do seu repositório. Abra a pasta certa no VSCode (passo 6).
+•	O GitHub mostra a pasta node_modules → o .gitignore foi apagado ou está fora da pasta fase-2. Chame o professor antes do próximo commit.
+
