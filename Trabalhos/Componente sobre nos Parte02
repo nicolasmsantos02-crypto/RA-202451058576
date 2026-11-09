@@ -1,0 +1,49 @@
+
+function App() {
+  return (
+    <main>
+      <h1>Sobre nós</h1>
+
+      <p>
+        Tudo começa com uma paixão: a paixão por criar momentos especiais,
+        reunir pessoas e transformar simples encontros em experiências
+        inesquecíveis.
+      </p>
+
+      <p>
+        Foi dessa paixão que nasceu a nossa cervejaria. Com o desejo de
+        produzir cervejas de qualidade, cheias de personalidade e com sabores
+        que despertam os sentidos, embarcamos em uma jornada onde cada detalhe
+        faz a diferença.
+      </p>
+
+      <p>
+        Acreditamos que uma boa cerveja vai muito além de seus ingredientes.
+        Ela carrega histórias, desperta conversas, aproxima pessoas e celebra
+        momentos. Por isso, dedicamos cuidado e criatividade a cada etapa da
+        produção, selecionando ingredientes e buscando o equilíbrio perfeito
+        entre aroma, sabor e qualidade.
+      </p>
+
+      <p>
+        Nossa essência está na valorização da cultura cervejeira, na busca
+        constante por inovação e no respeito à tradição. Cada receita é
+        desenvolvida com dedicação, porque sabemos que por trás de cada copo
+        existe uma oportunidade de criar uma boa lembrança.
+      </p>
+
+      <p>
+        Hoje, seguimos com o mesmo propósito que nos inspirou desde o início:
+        produzir cervejas que surpreendem, conquistam paladares e tornam cada
+        brinde especial.
+      </p>
+
+      <p>
+        Nossa cerveja tem personalidade. Nossa história tem paixão. E o
+        próximo brinde pode ser com você!
+      </p>
+    </main>
+  );
+}
+
+export default App;
