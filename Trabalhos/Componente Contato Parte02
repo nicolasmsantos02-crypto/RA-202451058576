@@ -1,0 +1,29 @@
+
+function Contato() {
+  return (
+    <section className="contato">
+      <h1>Entre em Contato</h1>
+
+      <p>
+        Estamos à disposição para atender você!
+        Entre em contato conosco pelos canais abaixo.
+      </p>
+
+      <div className="informacao">
+        <h3>📞 Telefone</h3>
+        <a href="tel:+5531999999999">
+          (31) 99999-9999
+        </a>
+      </div>
+
+      <div className="informacao">
+        <h3>📧 E-mail</h3>
+        <a href="mailto:contato@empresa.com.br">
+          contato@empresa.com.br
+        </a>
+      </div>
+    </section>
+  );
+}
+
+export default Contato;
