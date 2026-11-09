@@ -1,0 +1,125 @@
+
+function App() {
+  return (
+    <>
+      <main>
+        <h1>Catálogo</h1>
+
+        <section className="catalogo">
+
+          <header className="catalogo-introducao">
+            <h2 id="catalogo-titulo">
+              Nosso catálogo
+            </h2>
+
+            <p>
+              Conheça algumas das cervejas e bebidas
+              disponíveis na Cervejaria Salto de Fé.
+            </p>
+          </header>
+
+          <div className="produtos">
+
+            <article className="card">
+              <h3>Buraco Negro</h3>
+              <p>
+                Oatmeal Stout com cacau —
+                6% Vol. Alc.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>IPA Rola Moça</h3>
+              <p>
+                American IPA —
+                6,1% Vol. Alc.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>D'Alma</h3>
+              <p>
+                Dark Strong Ale —
+                10,1% Vol. Alc. —
+                IBU 27.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>Ruptura</h3>
+              <p>
+                American IPA —
+                6,04% Vol. Alc.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>Canvas</h3>
+              <p>
+                Hop Lager —
+                4,5% Vol. Alc.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>D'Inteiro</h3>
+              <p>
+                American Lager —
+                4,7% Vol. Alc.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>Aurora Rubra</h3>
+              <p>
+                Munich Dunkel.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+            <article className="card">
+              <h3>Salto Fino</h3>
+              <p>
+                Bebida mista de gin
+                e Pink Lemonade.
+              </p>
+              <button type="button">
+                Ver item
+              </button>
+            </article>
+
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          &copy; 2026 Cervejaria Salto de Fé.
+          Todos os direitos reservados.
+        </p>
+      </footer>
+    </>
+  );
+}
+
+export default App;
